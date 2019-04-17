@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1554868380618.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F23EDC0E",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1554868380618,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "7DCFF3A6",
+        "caption" : "power.frame.ratio",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=power.frame.ratio&cache_key=7DCFF3A6",
+        "displayedObservations" : 100,
+        "environment" : "",
+        "object" : "power.frame.ratio",
+        "preview" : 0,
+        "totalObservations" : 100,
+        "variables" : 16
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
