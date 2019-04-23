@@ -52,3 +52,14 @@ def get_postswith(n):
 	path= 'maps/map'+str(num)+'.json'
 	return contributes_to_postswith(json_to_contributes(path))
 	
+#create a csv with edge connections
+def postswith_csv(postswith, path):
+	with open(path, 'w') as file:
+		for user1 in postswith:
+			for user2 in postswith[user1]:
+				file.write(user1 + "," + user2 + "\n")
+
+#create a csv with edge connections for the nth thousand sequences
+def thousand_csv(n, path):
+	postswith_csv(get_postswith(n), path)
+	
