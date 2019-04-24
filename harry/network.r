@@ -56,3 +56,11 @@ known_all <- 1:300 #c(1:15, 75:86, 150:157, 225:237, 301)
 all_means <- lapply(known_all, distance, dir_path= "maps_all")
 points(known_all, all_means, "p", col="red")
 
+
+for(i in 1:length(V(user_network))){
+     max= max(sapply(shortest_paths(user_network, 1)$vpath, length))
+     if(max > maxmax){
+         print(i)
+         maxmax= max
+     }
+}
