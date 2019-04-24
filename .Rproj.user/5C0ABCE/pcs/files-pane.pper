@@ -1,9 +1,0 @@
-{
-    "path" : "~/3rd_year/Sem2/Data/oeisData/OEIS",
-    "sortOrder" : [
-        {
-            "ascending" : true,
-            "columnIndex" : 2
-        }
-    ]
-}
