@@ -13,33 +13,31 @@ source("../network_dashboard.R")
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
+network.ui <- fluidPage(
    
    # Application title
    titlePanel("Old Faithful Geyser Data"),
    
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-        selectInput("v1_select", label = "Choose a user", 
-                    choices = V(user_network),
-                    selected= 1),
-        selectInput("v2_select", label = "Choose another user", 
-                    choices = V(user_network),
-                    selected= 1013)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("pathPlot"),
-         plotOutput("distPlot"),
-         plotOutput("netPlot")
-      )
+   fluidRow(
+      column(4, plotOutput("netPlot")),
+      column(8, plotOutput("distPlot"))
+   ),
+   
+   fluidRow(
+      column(4, br(), wellPanel(
+          selectInput("v1_select", label = "Choose a user", 
+                                   choices = V(user_network),
+                                   selected= 1),
+          selectInput("v2_select", label = "Choose another user",
+                                   choices = V(user_network),
+                                   selected= 1013)
+      )),
+      column(8, plotOutput("pathPlot"))
    )
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+network.server <- function(input, output) {
    output$distPlot <- renderPlot({
       plot(mean_distances, main= "User connections fall of slowly later in the OEIS",
                            xlab= "Thousand Sequences",
@@ -49,8 +47,7 @@ server <- function(input, output) {
    })
    
    output$netPlot <- renderPlot({
-      plot(user_subnetwork, main= "A subgraph of the OEIS User Network",
-                            sub= "Nicolea has contributed the same sequence as Daniel")
+      plot(user_subnetwork, main= "A subgraph of the OEIS User Network")
    })
    
    output$pathPlot <- renderPlot({
@@ -68,5 +65,5 @@ server <- function(input, output) {
 }
 
 # Run the application 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = network.ui, server = network.server)
 
