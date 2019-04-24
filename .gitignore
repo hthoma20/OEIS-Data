@@ -4,7 +4,10 @@
 *.csv
 *.txt
 *.Rproj
-*.R*
+*.RData
+*.Rhistory
 stripped
 __pycache__/
 .Rproj.user
+simon/all_counts2
+simon/sequences
