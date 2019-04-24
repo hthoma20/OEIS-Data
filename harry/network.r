@@ -2,20 +2,24 @@ library('igraph')
 
 #find the mean distance of the postswith relation
 #of the nth thousand sequence
-distance <- function(n){
-  path <- paste("harry/maps/postswith/", n, ".csv", sep="")
-  network <- read.csv(path)
+distance <- function(n, dir_path){
+  path <- paste("harry/", dir_path, "/", n, ".csv", sep="")
+  network <- try(read.csv(path), silent= T)
+  
+  if(class(network) == "try-error"){
+    return(0)
+  }
   
   graph <- graph_from_data_frame(network, directed = F)
   
   return(mean_distance(graph))
 }
 
-network <- read.csv("harry/maps/postswith/301.csv")
+network <- read.csv("harry/all_graph.csv")
 
 graph <- graph_from_data_frame(network, directed = F)
 
-small_threshold <- 700
+small_threshold <- 500
 small_vertices_count <- 0
 for(vertex in V(graph)){
     if(degree(graph, vertex) < small_threshold){
@@ -37,6 +41,18 @@ small_graph <- delete_vertices(graph, small_vertices)
 length(V(small_graph))
 plot(small_graph, vertex.label=NA, edges.curved= F)
 
-known <- c(1:10, 75:83, 150:153, 225:234, 301)
-plot(known, lapply(known, distance))
+
+
+#all values -- these are known now
+known_comments <- 1:300
+
+#get the mean distance
+means <- lapply(known_comments, distance, dir_path= "maps_comments")
+
+plot(known_comments, means)
+
+#the values I know
+known_all <- 1:300 #c(1:15, 75:86, 150:157, 225:237, 301)
+all_means <- lapply(known_all, distance, dir_path= "maps_all")
+points(known_all, all_means, "p", col="red")
 

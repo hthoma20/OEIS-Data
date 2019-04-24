@@ -49,8 +49,8 @@ def sequence_users_map(start, end):
 	
 if __name__ == "__main__":
 	#do 1000 at a time
-	start= 154
-	for i in range((start-1)*1000+1, 322000, 1000):
+	start= 235
+	for i in range((start-1)*1000+1, 300000, 1000):
 		map= sequence_users_map(i, i+1000)
 		
 		file_name= 'maps/map'+str(i)+'.json'
