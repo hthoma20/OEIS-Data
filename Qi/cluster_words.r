@@ -17,7 +17,8 @@ freq <- fread('../sorted_freq_ratio.txt')
 names(freq) <- c('word', 'oeis', 'brown', 'ratio')
 
 ## hierarchial clustering
-dis <- as.dist(dist.matrix(mat2), diag=T) # dist.matrix is optimized for sparse matrices
+dis.mat <- dist.matrix(mat2)
+dis <- as.dist(dis.mat, diag=T) # dist.matrix is optimized for sparse matrices
 hitre <- hclust(dis, method='average')
 
 

@@ -10,7 +10,7 @@ from bisect import bisect_left
 conn = sqlite3.connect('oeis_parsed.sqlite3')
 c = conn.cursor()
 c.execute('''select oeis_id, comments
-from oeis_entries limit 30000''')
+from oeis_entries limit 300000''')
 
 # split on '- _username_, Mmm dd yyyy\n'
 commentend = re.compile(r'(?:-|\.\.\.\.) _([^_]+)_, \w{3} \d{1,2} \d{4}\n')

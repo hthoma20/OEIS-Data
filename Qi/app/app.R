@@ -27,8 +27,13 @@ word.ui <- fluidPage(
          sliderInput("k",
                      "Number of clusters:",
                      min = 2,
-                     max = 50,
-                     value = 9)
+                     max = 200,
+                     value = 60)
+         ,selectInput('search',
+                     'Search for word:',
+                     wordlist,
+                     selected = 'pi'),
+         htmlOutput('found')
       ),
       
       # Show a plot of the generated distribution
@@ -46,9 +51,15 @@ word.server <- function(input, output) {
   })
   plotHeight <- reactive(300*ceiling(plotCount()/3))
   
+  output$found <- renderUI({
+    if(input$search %in% wordlist){
+      wordnum <- which(wordlist == input$search)
+      HTML(paste(head(wordlist[order(dis.mat[wordnum,])], n=50), sep = '<br>'))
+    }
+  })
+  
   numcolors <- 3
   output$wordclouds <- renderPlot({
-    print('asdf')
     req(plotCount())
     k = plotCount()
     par(mfrow=c(ceiling(k/3), 3))
@@ -65,7 +76,6 @@ word.server <- function(input, output) {
   })
   
   output$plots <- renderUI({
-    print(plotCount())
     plotOutput("wordclouds", height = plotHeight())
   })
 }
