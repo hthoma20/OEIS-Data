@@ -1,23 +1,27 @@
 #!/bin/env python
+from string import punctuation
 import numpy as np
 import re
 import sys
 import sqlite3
 import nltk
+from bisect import bisect_left
 
 conn = sqlite3.connect('oeis_parsed.sqlite3')
 c = conn.cursor()
 c.execute('''select oeis_id, comments
-from oeis_entries limit 300000''')
+from oeis_entries limit 30000''')
 
 # split on '- _username_, Mmm dd yyyy\n'
 commentend = re.compile(r'(?:-|\.\.\.\.) _([^_]+)_, \w{3} \d{1,2} \d{4}\n')
 al = re.compile(r'[A-Za-z]{2,}')
 
+# form frequency distributions for each sequence
 ind = []
 dists = []
 words = set()
 totaldist = nltk.FreqDist()
+st = nltk.stem.lancaster.LancasterStemmer()
 for oid, comments in c:
     if oid%1000 == 0:
         print('oid = %d' % oid)
@@ -26,56 +30,45 @@ for oid, comments in c:
         continue
 
     tokens = nltk.word_tokenize(commentend.sub('\n', comments))
-    tokens = [t.lower() for t in tokens
+    tokens = [t.lower().strip(punctuation)
+              for t in tokens
               if al.match(t) is not None]
     dist = nltk.FreqDist(tokens)
     dists.append(dist)
     words |= dist.keys()
     totaldist += dist
 
-# count how many sequences has word
-ps = nltk.stem.PorterStemmer()
-hasword = {}
-for word in words:
-    hasword[word] = 0
-for dist in dists:
-    for word in dist.keys():
-        hasword[word] += 1
-
-# remove common words
-hasworddist = sorted(hasword.items(), reverse=True,
-                     key = lambda item: item[1])
-brown = nltk.FreqDist(ps.stem(w.lower())
-                      for w in nltk.corpus.brown.words())
-commonwords = brown.most_common(100)
-commonwords = set(pair[0] for pair in commonwords)
+#filter obscure words
+words = {w for w in words if totaldist[w]>=10}
+brown = nltk.corpus.brown.words()
+filteredwords = set(nltk.corpus.stopwords.words('english'))
+filteredwords.update(word[0] for word in
+                     nltk.FreqDist(brown).most_common(1000))
+brown = nltk.FreqDist(st.stem(w.lower()) for w in brown)
+wordl = sorted(words.difference(filteredwords))
 
 # compare OEIS frequency against brown
-brownthe = brown['the']
-oeisthe = totaldist['the']
-wordl = sorted(words)
 wordratio = []
 for word in wordl:
-    if brown[ps.stem(word)]==0:
+    if brown[st.stem(word)]==0:
         wordratio.append(0)
         continue
-    wordratio.append(totaldist[word]/oeisthe /
-                     (brown[ps.stem(word)]/brownthe))
+    wordratio.append(totaldist[word] / brown[st.stem(word)])
 ratiosort = np.argsort(wordratio)
 with open('sorted_freq_ratio.txt','w') as f:
     for ord in ratiosort:
         f.write('%s,%d,%d,%f\n' % (wordl[ord],
                                    totaldist[wordl[ord]],
-                                   brown[ps.stem(wordl[ord])],
+                                   brown[st.stem(wordl[ord])],
                                    wordratio[ord]))
 
+# frequency of each word in each sequence
 with open('word_list.txt', 'w') as f:
     f.write('\n'.join(wordl))
 with open('freqdist.csv', 'w') as f:
-    for row, dist in enumerate(dists):
-        f.write(str(ind[row]))
-        for word in wordl:
-            f.write(',')
-            f.write(str(dist[word]))
-        f.write('\n')
-# print(words)
+    for seq, dist in enumerate(dists):
+        for word, count in dist.items():
+            wordnum = bisect_left(wordl, word)
+            if wordnum>=len(wordl) or wordl[wordnum]!=word:
+                continue
+            f.write('%d,%d,%d\n' % (seq, wordnum, count))
