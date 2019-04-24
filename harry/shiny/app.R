@@ -9,14 +9,14 @@
 
 library(shiny)
 
-source("../network_dashboard.R")
+source("../network_dashboard.r")
 
 
 # Define UI for application that draws a histogram
 network.ui <- fluidPage(
    
    # Application title
-   titlePanel("Old Faithful Geyser Data"),
+   titlePanel("Degrees of Separation Between Contributors"),
    
    fluidRow(
       column(4, plotOutput("netPlot")),
@@ -39,7 +39,7 @@ network.ui <- fluidPage(
 # Define server logic required to draw a histogram
 network.server <- function(input, output) {
    output$distPlot <- renderPlot({
-      plot(mean_distances, main= "User connections fall of slowly later in the OEIS",
+      plot(mean_distances, main= "User connections fall off slowly later in the OEIS",
                            xlab= "Thousand Sequences",
                            ylab= "Average distance between users")
      
@@ -65,5 +65,5 @@ network.server <- function(input, output) {
 }
 
 # Run the application 
-shinyApp(ui = network.ui, server = network.server)
+#shinyApp(ui = network.ui, server = network.server)
 

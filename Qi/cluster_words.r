@@ -8,12 +8,12 @@ library(RColorBrewer)
 
 
 
-data <- fread('freqdist.csv')
+data <- fread('../freqdist.csv')
 names(data) <- c('seq', 'wordnum', 'count')
-wordlist <- read.table('word_list.txt')$V1
+wordlist <- read.table('../word_list.txt')$V1
 data <- data.frame(data, word = factor(data$wordnum, labels = wordlist))
 mat2 <- sparseMatrix(j = data$seq+1, i = data$wordnum+1, x = data$count)
-freq <- fread('sorted_freq_ratio.txt')
+freq <- fread('../sorted_freq_ratio.txt')
 names(freq) <- c('word', 'oeis', 'brown', 'ratio')
 
 ## hierarchial clustering

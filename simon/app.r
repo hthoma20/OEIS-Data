@@ -15,7 +15,7 @@ library(DT)
 freq.ui <- fluidPage(
    
    # Application title
-   titlePanel("OEIS"),
+   titlePanel("Frequency of Occurance of Each Integer in All Sequences"),
    
    # Sidebar  
    sidebarLayout(
@@ -25,7 +25,8 @@ freq.ui <- fluidPage(
                      "range of sequences to check ",
                      min = 1,
                      max = dim(sequences)[1], #number of sequences
-                     value = c(1, 100)),
+                     value = c(1, 100),
+                     step = 10),
          
          numericInput("number",
                       "Integer number to check",
@@ -76,5 +77,5 @@ freq.server <- function(input, output) {
 }
 
 # Run the application 
-shinyApp(ui = freq.ui, server = freq.server)
+#shinyApp(ui = freq.ui, server = freq.server)
 
