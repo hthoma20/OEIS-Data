@@ -72,7 +72,7 @@ freq.server <- function(input, output) {
    
    output$Plot1 <- renderPlot({
       # Counting the occurence of numbers per sequences
-      count <- apply(sequences[input$sequence.range[1]:input$sequence.range[2],], MARGIN = 1, 
+      count <- apply(sequences, MARGIN = 1, 
                      function(x) length(which(x==input$number)))
       plot(count, type = 'h', xlim= input$sequence.range, 
            main="The selected number counts per sequence",
