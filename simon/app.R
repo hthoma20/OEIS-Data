@@ -16,7 +16,7 @@ library(DT)
 freq.ui <- fluidPage(
    
    # Application title
-   titlePanel("OEIS"),
+   titlePanel("Frequency of Occurance of Each Integer in All Sequences"),
    
    # Sidebar  
    sidebarLayout(
@@ -103,5 +103,5 @@ freq.server <- function(input, output) {
 }
 
 # Run the application 
-shinyApp(ui = freq.ui, server = freq.server)
+#shinyApp(ui = freq.ui, server = freq.server)
 
