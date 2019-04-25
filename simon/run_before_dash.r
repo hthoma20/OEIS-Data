@@ -13,4 +13,5 @@ counts2 <- count(unlist(only_sequences))
 counts2.ordered = counts2[order(-counts2[,2]),]
 # Save file to locations with the shiny app
 # First one is all the NA's which we don't need and thus won't save
-saveRDS(counts2.ordered[2:dim(counts2.ordered)[1],], file = "First_dashboard/all_counts2")
+saveRDS(counts2.ordered[2:dim(counts2.ordered)[1],], file = "all_counts2")
+saveRDS(only_sequences, file = 'sequences')
