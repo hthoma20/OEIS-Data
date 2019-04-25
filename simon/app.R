@@ -28,14 +28,14 @@ freq.ui <- fluidPage(
         sliderInput("number.range",
                     "range around selected number to show",
                     min = 0,
-                    max = 10000, # number of integers
+                    max = 10000, 
                     value = 50,
                     step = 1
         ),
         sliderInput("yrange",
                     "Height of Histogram plot for frequency in entire set",
                     min = 10,
-                    max = max(counts[,2]), # number of integers
+                    max = max(counts[,2]), # max frequency
                     value = 500,
                     step = 10
         ),
